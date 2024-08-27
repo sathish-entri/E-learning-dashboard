@@ -24,7 +24,7 @@ import Studycreate from './role/educator/Studycreate';
 import Assignmentcreate from './role/educator/Assignmentcreate';
 import ClassList from './role/leaner/ClassList';
 import Submitassign from './role/educator/Submitassign';
-import Hell from './Hell';
+// import Hell from './Hell';
 
 function App() {
   let localvalue = localStorage.getItem("register")
@@ -38,7 +38,7 @@ function App() {
         
       <header className="App-header" >
         <Routes>
-          {/* <Route path='/' element={<Hell />}/> */}
+        
           <Route path='/' element={ login? <Registerr setlogin={setlogin} /> :<Login setlogin={setlogin} />}/>
           <Route path='/home' element={<Home theme={theme} settheme={settheme} />}/>
           <Route path='/coordinator' element={ <Coodinator theme={theme} settheme={settheme} />}/>
