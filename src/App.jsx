@@ -75,26 +75,26 @@ export default function App() {
           </ProtectedRoute>
         }>
           {/* Coordinator Portal */}
-          <Route path="/coordinator" element={<CoordinatorDashboard />} />
-          <Route path="/coordinator/courses" element={<CoursesPage />} />
-          <Route path="/coordinator/educators" element={<EducatorsPage />} />
-          <Route path="/coordinator/learners" element={<LearnersPage />} />
+          <Route path="/coordinator" element={<ProtectedRoute allowedRoles={["coordinator"]}><CoordinatorDashboard /></ProtectedRoute>} />
+          <Route path="/coordinator/courses" element={<ProtectedRoute allowedRoles={["coordinator"]}><CoursesPage /></ProtectedRoute>} />
+          <Route path="/coordinator/educators" element={<ProtectedRoute allowedRoles={["coordinator"]}><EducatorsPage /></ProtectedRoute>} />
+          <Route path="/coordinator/learners" element={<ProtectedRoute allowedRoles={["coordinator"]}><LearnersPage /></ProtectedRoute>} />
 
           {/* Educator Portal */}
-          <Route path="/educator" element={<EducatorDashboard />} />
-          <Route path="/educator/classrooms" element={<EducatorDashboard />} />
-          <Route path="/educator/classroom/:id" element={<ClassroomDetailPage />} />
+          <Route path="/educator" element={<ProtectedRoute allowedRoles={["educator"]}><EducatorDashboard /></ProtectedRoute>} />
+          <Route path="/educator/classrooms" element={<ProtectedRoute allowedRoles={["educator"]}><EducatorDashboard /></ProtectedRoute>} />
+          <Route path="/educator/classroom/:id" element={<ProtectedRoute allowedRoles={["educator"]}><ClassroomDetailPage /></ProtectedRoute>} />
 
           {/* Learner Portal */}
-          <Route path="/learner" element={<LearnerDashboard />} />
-          <Route path="/learner/classrooms" element={<LearnerDashboard />} />
-          <Route path="/learner/classroom/:id" element={<LearnerClassroomDetailPage />} />
-          <Route path="/learner/courses" element={<LearnerCoursesPage />} />
-          <Route path="/learner/live" element={<ActiveLiveSessionsPage />} />
-          <Route path="/learner/quiz/:quizId" element={<QuizPage />} />
-          <Route path="/learner/analytics" element={<AnalyticsDashboard />} />
+          <Route path="/learner" element={<ProtectedRoute allowedRoles={["learner"]}><LearnerDashboard /></ProtectedRoute>} />
+          <Route path="/learner/classrooms" element={<ProtectedRoute allowedRoles={["learner"]}><LearnerDashboard /></ProtectedRoute>} />
+          <Route path="/learner/classroom/:id" element={<ProtectedRoute allowedRoles={["learner"]}><LearnerClassroomDetailPage /></ProtectedRoute>} />
+          <Route path="/learner/courses" element={<ProtectedRoute allowedRoles={["learner"]}><LearnerCoursesPage /></ProtectedRoute>} />
+          <Route path="/learner/live" element={<ProtectedRoute allowedRoles={["learner"]}><ActiveLiveSessionsPage /></ProtectedRoute>} />
+          <Route path="/learner/quiz/:quizId" element={<ProtectedRoute allowedRoles={["learner"]}><QuizPage /></ProtectedRoute>} />
+          <Route path="/learner/analytics" element={<ProtectedRoute allowedRoles={["learner"]}><AnalyticsDashboard /></ProtectedRoute>} />
 
-          {/* Profile & Notifications */}
+          {/* Profile & Notifications (All logged in users can access) */}
           <Route path="/profile" element={<Profile />} />
           <Route path="/notifications" element={<NotificationCenter />} />
         </Route>
