@@ -319,14 +319,29 @@ The educator is a **teaching professional** who manages classrooms, teaches live
 - Click **Publish Assignment** and fill in the title, instructions, maximum marks, and due date.
 - Click **Publish**. All enrolled students are notified immediately.
 
-**Step 6 — Grade Student Submissions**
+**Step 6 — Create & Manage MCQ Quizzes**
+- Inside the classroom, click the **Quizzes** tab.
+- Click **Create Quiz**.
+- Enter the title, topic, duration limit, and write questions with 4 options each, selecting the correct option index.
+- Click **Save Quiz** to publish it.
+
+**Step 7 — Make Announcements**
+- Open the classroom and click the **Announcements** tab.
+- Click **New Announcement** and enter a title, priority level (Info, Reminder, Urgent), and content.
+- Click **Post** to trigger live student browser notifications.
+
+**Step 8 — Participate in Class Forums**
+- Click the **Discussion Forum** tab inside a classroom.
+- Post a new general topic, answer student doubts, upvote posts, or mark helpful student replies as the "Accepted Answer" to resolve doubts.
+
+**Step 9 — Grade Student Submissions**
 - Click the **Assignments** tab.
 - Click **View Submissions** next to any published assignment.
 - The view switches to the **Grading Panel** tab showing all student submissions.
 - Click a student's submission file to review it, then click **Evaluate** to open the grading form.
 - Enter the score and written feedback, then click **Save Assessment**.
 
-**Step 7 — Start a Live Class**
+**Step 10 — Start a Live Class**
 - Open any classroom.
 - Click the red **Start Live Class** button in the top header.
 - All enrolled students instantly receive a live toast notification.
@@ -344,34 +359,44 @@ The learner is a **student** who joins classrooms, accesses study material, subm
 - Select the **Learner** role card.
 - Fill in your name, email, and password and submit.
 
-**Step 2 — View Your Dashboard**
-- Your dashboard shows all enrolled classrooms with progress bars, active live class alerts, and assignment statistics.
-- If a live class is currently active, a **red banner** appears at the top with a **Join Now** button.
+**Step 2 — View Your Dashboard & Streaks**
+- Your dashboard shows enrolled classrooms, active live class banners, and study statistics.
+- Check your **Daily Streak flame 🔥** on the dashboard. Log in every day and complete activities to keep it burning!
 
-**Step 3 — Enter a Classroom**
-- Click any enrolled classroom card.
-- The classroom opens with three tabs: **Study Plan**, **Assignments**, and **Classmates**.
+**Step 3 — Take MCQ Quizzes**
+- Enter any classroom and click the **Quizzes** tab.
+- Click **Start Quiz** to take a timed quiz.
+- View your score instantly on completion, review correct/incorrect answers, and read teacher explanations.
+- Earning a passing grade (50%+) awards you XP points!
 
-**Step 4 — Access Study Material**
-- Click the **Study Plan** tab to browse all topics uploaded by your educator.
-- Click on resource links to access slides, videos, or reading materials.
+**Step 4 — Join Discussions & Post Doubts**
+- Click the **Discussion Forum** tab inside a classroom.
+- Post questions or doubts, reply to classmates, upvote useful posts, and check pinned announcements from your teacher.
 
-**Step 5 — Submit an Assignment**
+**Step 5 — Use the Gemini AI Study Assistant**
+- Click the floating **AI chat icon (🤖)** in the bottom right corner of any page.
+- Type any question about your course materials, math formulas, or essay topics.
+- Get instant, student-friendly markdown answers from Google Gemini 1.5 Flash.
+
+**Step 6 — Submit Assignments**
 - Click the **Assignments** tab.
-- For each active assignment, click **Choose File** to select your work file from your computer.
-- Click **Submit Project** to upload it to the cloud.
-- Once your educator grades it, you will see your score and feedback displayed here.
+- Select your document or file, and upload your submission.
+- Check back later to see your grade and written teacher feedback.
 
-**Step 6 — Join a Live Class**
+**Step 7 — Join a Live Class**
 - When your educator starts a live class, a red toast notification appears on your screen.
 - Click **Join Now** in the notification or go to **Live Sessions** in the sidebar.
 - The HD video call opens inside the dashboard with a real-time chat panel.
 
-**Step 7 — Browse the Course Catalog**
+**Step 8 — View Analytics & Badges**
+- Click **My Analytics** in the sidebar.
+- Check your performance charts, level progress bar, and list of unlocked achievement badges!
+
+**Step 9 — Browse the Course Catalog**
 - Click **Courses** in the left sidebar to browse all published courses across the platform.
 - Use the search bar to filter by title or category.
 
-**Step 8 — Manage Your Profile**
+**Step 10 — Manage Your Profile**
 - Click **Profile** in the sidebar.
 - Update your name, bio, and mobile number.
 - Upload a new profile photo by clicking **Upload New Photo**.
