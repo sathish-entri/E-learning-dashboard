@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Eye, EyeOff, LogIn, BookOpen, Users, Video, Award } from "lucide-react";
 import toast from "react-hot-toast";
+import ThreeBackground from "../components/common/ThreeBackground";
 
 export default function Login() {
   const { login } = useAuth();
@@ -33,19 +34,21 @@ export default function Login() {
       <div className="auth-grid-bg" />
 
       {/* Left Panel */}
-      <div className="auth-left">
-        <div className="auth-left-content animate-in">
-          <div className="auth-left-badge">
+      <div className="auth-left" style={{ overflow: "hidden" }}>
+        <ThreeBackground />
+        <div className="auth-left-content animate-in" style={{ position: "relative", zIndex: 1, pointerEvents: "none" }}>
+          <div className="auth-left-badge" style={{ pointerEvents: "auto" }}>
             <span>🎓</span> E-Learning Platform
           </div>
-          <h1 className="auth-left-title">
+          <h1 className="auth-left-title" style={{ pointerEvents: "auto" }}>
             Transform the way you <span className="gradient-text">learn & teach</span>
           </h1>
-          <p className="auth-left-desc">
+
+          <p className="auth-left-desc" style={{ pointerEvents: "auto" }}>
             Join thousands of students and educators on our modern platform.
             Create classrooms, host live classes, and track progress — all in one place.
           </p>
-          <div className="auth-features">
+          <div className="auth-features" style={{ pointerEvents: "auto" }}>
             {[
               { icon: <Video size={20} />, title: "Live Classes", desc: "Stream HD video classes in real-time", color: "rgba(239,68,68,0.15)", iconColor: "#ef4444" },
               { icon: <BookOpen size={20} />, title: "Rich Course Library", desc: "Access structured study plans & materials", color: "rgba(99,102,241,0.15)", iconColor: "#818cf8" },
