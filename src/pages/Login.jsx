@@ -30,12 +30,12 @@ export default function Login() {
 
   return (
     <div className="auth-page">
+      <ThreeBackground />
       <div className="auth-bg" />
       <div className="auth-grid-bg" />
 
       {/* Left Panel */}
       <div className="auth-left" style={{ overflow: "hidden" }}>
-        <ThreeBackground />
         <div className="auth-left-content animate-in" style={{ position: "relative", zIndex: 1, pointerEvents: "none" }}>
           <div className="auth-left-badge" style={{ pointerEvents: "auto" }}>
             <span>🎓</span> E-Learning Platform

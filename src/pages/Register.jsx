@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Eye, EyeOff, UserPlus } from "lucide-react";
 import toast from "react-hot-toast";
+import ThreeBackground from "../components/common/ThreeBackground";
 
 const roles = [
   { value: "coordinator", label: "Coordinator", icon: "🏛️", desc: "Manage courses & users" },
@@ -19,7 +20,10 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.password.length < 6) { toast.error("Password must be at least 6 characters"); return; }
+    if (form.password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
     setLoading(true);
     try {
       const user = await register(form);
@@ -36,6 +40,7 @@ export default function Register() {
 
   return (
     <div className="auth-page">
+      <ThreeBackground />
       <div className="auth-bg" />
       <div className="auth-grid-bg" />
       <div className="auth-left">
