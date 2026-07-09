@@ -15,7 +15,7 @@ export default function ThreeBackground() {
       0.1,
       1000
     );
-    camera.position.z = 8;
+    camera.position.z = 15;
 
     // ─── Renderer Setup ────────────────────────────────────────────────────────
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -23,118 +23,183 @@ export default function ThreeBackground() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     containerRef.current.appendChild(renderer.domElement);
 
-    // ─── Create Floating Particle Network (Digital Globe) ───────────────────────
-    const particleCount = 1200;
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
+    // ─── Particle Settings ──────────────────────────────────────────────────────
+    const maxParticles = 120;
+    const maxDistance = 3.5; // distance at which lines connect
+    const particlePositions = new Float32Array(maxParticles * 3);
+    const particleData = [];
 
-    const color1 = new THREE.Color("#6366f1"); // Primary Indigo
-    const color2 = new THREE.Color("#06b6d4"); // Secondary Cyan
+    // Screen boundaries mapped to 3D space at z=0
+    const xLimit = 12;
+    const yLimit = 8;
 
-    for (let i = 0; i < particleCount; i++) {
-      // Generate spherical distribution
-      const u = Math.random();
-      const v = Math.random();
-      const theta = u * 2.0 * Math.PI;
-      const phi = Math.acos(2.0 * v - 1.0);
-      const r = 3.5 + Math.random() * 0.5; // radius with variation
+    // Generate random positions & velocities
+    for (let i = 0; i < maxParticles; i++) {
+      const x = (Math.random() - 0.5) * xLimit * 2;
+      const y = (Math.random() - 0.5) * yLimit * 2;
+      const z = (Math.random() - 0.5) * 6; // depth
 
-      const x = r * Math.sin(phi) * Math.cos(theta);
-      const y = r * Math.sin(phi) * Math.sin(theta);
-      const z = r * Math.cos(phi);
+      particlePositions[i * 3] = x;
+      particlePositions[i * 3 + 1] = y;
+      particlePositions[i * 3 + 2] = z;
 
-      positions[i * 3] = x;
-      positions[i * 3 + 1] = y;
-      positions[i * 3 + 2] = z;
-
-      // Blend colors randomly between Indigo and Cyan
-      const mixedColor = color1.clone().lerp(color2, Math.random());
-      colors[i * 3] = mixedColor.r;
-      colors[i * 3 + 1] = mixedColor.g;
-      colors[i * 3 + 2] = mixedColor.b;
+      particleData.push({
+        velocity: new THREE.Vector3(
+          (Math.random() - 0.5) * 0.015,
+          (Math.random() - 0.5) * 0.015,
+          (Math.random() - 0.5) * 0.01
+        ),
+        numConnections: 0,
+      });
     }
 
-    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+    // ─── Points (Stars) ────────────────────────────────────────────────────────
+    const pointsGeometry = new THREE.BufferGeometry();
+    pointsGeometry.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
 
-    // Particle texture
-    const pMaterial = new THREE.PointsMaterial({
-      size: 0.08,
-      vertexColors: true,
+    // Custom shader material for glowing round points
+    const pointsMaterial = new THREE.PointsMaterial({
+      size: 0.18,
+      color: 0x818cf8, // primary-light purple
       transparent: true,
       opacity: 0.8,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
 
-    const particles = new THREE.Points(geometry, pMaterial);
+    const particles = new THREE.Points(pointsGeometry, pointsMaterial);
     scene.add(particles);
 
-    // Add extra orbit ring particles
-    const ringCount = 400;
-    const ringGeometry = new THREE.BufferGeometry();
-    const ringPos = new Float32Array(ringCount * 3);
-    const ringColors = new Float32Array(ringCount * 3);
+    // ─── Line Segments (Constellation Connections) ─────────────────────────────
+    const lineIndices = [];
+    const linePositions = new Float32Array(maxParticles * maxParticles * 3);
+    const lineColors = new Float32Array(maxParticles * maxParticles * 3);
 
-    for (let i = 0; i < ringCount; i++) {
-      const angle = (i / ringCount) * Math.PI * 2;
-      const r = 4.8 + (Math.random() - 0.5) * 0.2;
-      ringPos[i * 3] = Math.cos(angle) * r;
-      ringPos[i * 3 + 1] = (Math.random() - 0.5) * 0.3; // thin plane
-      ringPos[i * 3 + 2] = Math.sin(angle) * r;
+    const lineGeometry = new THREE.BufferGeometry();
+    lineGeometry.setAttribute("position", new THREE.BufferAttribute(linePositions, 3));
+    lineGeometry.setAttribute("color", new THREE.BufferAttribute(lineColors, 3));
 
-      const c = new THREE.Color("#f59e0b"); // Gold accents
-      ringColors[i * 3] = c.r;
-      ringColors[i * 3 + 1] = c.g;
-      ringColors[i * 3 + 2] = c.b;
-    }
-
-    ringGeometry.setAttribute("position", new THREE.BufferAttribute(ringPos, 3));
-    ringGeometry.setAttribute("color", new THREE.BufferAttribute(ringColors, 3));
-
-    const ringMaterial = new THREE.PointsMaterial({
-      size: 0.05,
+    const lineMaterial = new THREE.LineBasicMaterial({
       vertexColors: true,
       transparent: true,
-      opacity: 0.6,
       blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      linewidth: 1,
     });
 
-    const ring = new THREE.Points(ringGeometry, ringMaterial);
-    ring.rotation.x = Math.PI / 6;
-    scene.add(ring);
+    const connections = new THREE.LineSegments(lineGeometry, lineMaterial);
+    scene.add(connections);
 
-    // ─── Mouse Interactions (Parallax) ─────────────────────────────────────────
-    let mouseX = 0;
-    let mouseY = 0;
-    let targetX = 0;
-    let targetY = 0;
+    // ─── Mouse Interactions (Repulsion/Parallax) ──────────────────────────────
+    let mouse = new THREE.Vector2(-999, -999);
+    let targetMouse = new THREE.Vector2(-999, -999);
 
     const handleMouseMove = (event) => {
-      mouseX = (event.clientX - window.innerWidth / 2) / 100;
-      mouseY = (event.clientY - window.innerHeight / 2) / 100;
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+      targetMouse.set(x * xLimit, y * yLimit);
+    };
+
+    const handleMouseLeave = () => {
+      targetMouse.set(-999, -999);
     };
 
     window.addEventListener("mousemove", handleMouseMove);
+    containerRef.current.addEventListener("mouseleave", handleMouseLeave);
+
+    // Colors for gradient lines (cyan to indigo)
+    const colorCyan = new THREE.Color("#06b6d4");
+    const colorIndigo = new THREE.Color("#6366f1");
 
     // ─── Animation Loop ────────────────────────────────────────────────────────
     let animationFrameId;
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
-      // Smooth mouse follow
-      targetX += (mouseX - targetX) * 0.05;
-      targetY += (mouseY - targetY) * 0.05;
+      const positions = pointsGeometry.attributes.position.array;
+      let vertexpos = 0;
+      let colorpos = 0;
+      let numConnected = 0;
 
-      particles.rotation.y += 0.0015;
-      particles.rotation.x += 0.0008;
+      // Smooth mouse transition
+      if (targetMouse.x !== -999) {
+        mouse.lerp(targetMouse, 0.08);
+      } else {
+        mouse.set(-999, -999);
+      }
 
-      ring.rotation.y -= 0.0025;
+      // Update positions
+      for (let i = 0; i < maxParticles; i++) {
+        // Apply velocity
+        positions[i * 3] += particleData[i].velocity.x;
+        positions[i * 3 + 1] += particleData[i].velocity.y;
+        positions[i * 3 + 2] += particleData[i].velocity.z;
 
-      // Apply parallax rotation based on mouse
-      scene.rotation.y = targetX * 0.15;
-      scene.rotation.x = targetY * 0.15;
+        // Boundary checks (bounce back)
+        if (positions[i * 3] < -xLimit || positions[i * 3] > xLimit) particleData[i].velocity.x *= -1;
+        if (positions[i * 3 + 1] < -yLimit || positions[i * 3 + 1] > yLimit) particleData[i].velocity.y *= -1;
+        if (positions[i * 3 + 2] < -3 || positions[i * 3 + 2] > 3) particleData[i].velocity.z *= -1;
+
+        // Mouse attraction/repulsion
+        if (mouse.x !== -999) {
+          const dx = mouse.x - positions[i * 3];
+          const dy = mouse.y - positions[i * 3 + 1];
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 4) {
+            // Push away subtly
+            positions[i * 3] -= (dx / dist) * 0.03;
+            positions[i * 3 + 1] -= (dy / dist) * 0.03;
+          }
+        }
+      }
+
+      // Find connections & update line buffer
+      for (let i = 0; i < maxParticles; i++) {
+        for (let j = i + 1; j < maxParticles; j++) {
+          const dx = positions[i * 3] - positions[j * 3];
+          const dy = positions[i * 3 + 1] - positions[j * 3 + 1];
+          const dz = positions[i * 3 + 2] - positions[j * 3 + 2];
+          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+          if (dist < maxDistance) {
+            const alpha = 1.0 - dist / maxDistance;
+
+            // Line segment endpoint A
+            linePositions[vertexpos++] = positions[i * 3];
+            linePositions[vertexpos++] = positions[i * 3 + 1];
+            linePositions[vertexpos++] = positions[i * 3 + 2];
+
+            // Line segment endpoint B
+            linePositions[vertexpos++] = positions[j * 3];
+            linePositions[vertexpos++] = positions[j * 3 + 1];
+            linePositions[vertexpos++] = positions[j * 3 + 2];
+
+            // Cyan to Indigo gradient based on connection index
+            const lerpedColor = colorCyan.clone().lerp(colorIndigo, i / maxParticles);
+
+            lineColors[colorpos++] = lerpedColor.r * alpha;
+            lineColors[colorpos++] = lerpedColor.g * alpha;
+            lineColors[colorpos++] = lerpedColor.b * alpha;
+
+            lineColors[colorpos++] = lerpedColor.r * alpha;
+            lineColors[colorpos++] = lerpedColor.g * alpha;
+            lineColors[colorpos++] = lerpedColor.b * alpha;
+
+            numConnected++;
+          }
+        }
+      }
+
+      pointsGeometry.attributes.position.needsUpdate = true;
+      lineGeometry.attributes.position.needsUpdate = true;
+      lineGeometry.attributes.color.needsUpdate = true;
+
+      // Draw only the connected lines
+      lineGeometry.setDrawRange(0, numConnected * 2);
+
+      // Rotate camera very slowly for dynamic scene depth
+      scene.rotation.y += 0.0004;
 
       renderer.render(scene, camera);
     };
@@ -159,16 +224,17 @@ export default function ThreeBackground() {
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("resize", handleResize);
-
-      if (containerRef.current && renderer.domElement) {
-        containerRef.current.removeChild(renderer.domElement);
+      if (containerRef.current) {
+        containerRef.current.removeEventListener("mouseleave", handleMouseLeave);
+        if (renderer.domElement) {
+          containerRef.current.removeChild(renderer.domElement);
+        }
       }
 
-      geometry.dispose();
-      ringGeometry.dispose();
-      pMaterial.dispose();
-      ringMaterial.dispose();
+      pointsGeometry.dispose();
+      lineGeometry.dispose();
+      pointsMaterial.dispose();
+      lineMaterial.dispose();
       renderer.dispose();
     };
   }, []);
@@ -184,7 +250,7 @@ export default function ThreeBackground() {
         height: "100%",
         zIndex: 0,
         pointerEvents: "none",
-        opacity: 0.85,
+        opacity: 0.75,
       }}
     />
   );
