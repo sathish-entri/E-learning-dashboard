@@ -1196,3 +1196,46 @@ select.form-control option { background: var(--bg-secondary); color: var(--text-
 .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px); z-index: 99; }
 @media (max-width: 768px) { .hamburger-btn { display: flex; } .sidebar-overlay.visible { display: block; } .main-content { margin-left: 0 !important; padding: var(--space-md); } .sidebar { transform: translateX(-100%); z-index: 100; } .sidebar.open { transform: translateX(0); } .stats-grid { grid-template-columns: repeat(2, 1fr); } .courses-grid { grid-template-columns: 1fr; } .page-header { flex-direction: column; align-items: flex-start; gap: var(--space-md); } .tab-bar { overflow-x: auto; } }
 @media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr; } .role-selector { grid-template-columns: 1fr; } .quiz-options-grid { grid-template-columns: 1fr; } .badge-grid { grid-template-columns: repeat(3, 1fr); } }
+
+
+/* ═══════════════════════════════════════════════════════════
+   UPGRADE LAYOUTS (GAMIFICATION, BADGES, AI CHAT) 
+═══════════════════════════════════════════════════════════ */
+.gamification-row { display: flex; gap: var(--space-md); margin-bottom: var(--space-lg); }
+.xp-widget { background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(6,182,212,0.08)); border: 1px solid rgba(99,102,241,0.25); border-radius: var(--radius-lg); padding: var(--space-md) var(--space-lg); flex: 1; }
+.xp-widget .level-badge { font-size: 0.75rem; font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; padding: 2px 10px; border-radius: var(--radius-full); display: inline-block; }
+.xp-bar-track { height: 8px; background: rgba(255,255,255,0.08); border-radius: var(--radius-full); overflow: hidden; margin-top: var(--space-sm); }
+.xp-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); border-radius: var(--radius-full); transition: width 0.8s ease; }
+.streak-widget { background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(239,68,68,0.08)); border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-lg); padding: var(--space-md) var(--space-lg); flex: 1; display: flex; align-items: center; gap: var(--space-md); }
+.streak-flame { font-size: 2.2rem; }
+.streak-days { font-size: var(--font-size-2xl); font-weight: 800; color: var(--accent); }
+.streak-label { color: var(--text-muted); font-size: var(--font-size-sm); }
+.badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: var(--space-md); margin-top: var(--space-md); }
+.badge-item { background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-lg); padding: var(--space-md); text-align: center; position: relative; transition: var(--transition-base); }
+.badge-item.earned { border-color: rgba(99,102,241,0.3); background: rgba(99,102,241,0.05); }
+.badge-item.locked { opacity: 0.4; filter: grayscale(1); }
+.badge-icon { font-size: 2rem; margin-bottom: var(--space-xs); }
+.badge-name { font-size: var(--font-size-sm); font-weight: 600; color: var(--text-primary); }
+.badge-desc { font-size: var(--font-size-xs); color: var(--text-muted); margin-top: 4px; }
+.badge-rarity { position: absolute; top: 6px; right: 6px; font-size: 0.6rem; font-weight: 700; padding: 2px 6px; border-radius: var(--radius-full); text-transform: uppercase; }
+.badge-rarity.common { background: rgba(148,163,184,0.15); color: #94a3b8; }
+.badge-rarity.rare { background: rgba(59,130,246,0.15); color: #60a5fa; }
+.badge-rarity.epic { background: rgba(139,92,246,0.15); color: #a78bfa; }
+.badge-rarity.legendary { background: rgba(245,158,11,0.15); color: #fbbf24; }
+.chart-card { background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-xl); padding: var(--space-xl); margin-bottom: var(--space-lg); }
+.ai-chat-fab { position: fixed; bottom: 2rem; right: 2rem; width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 1000; box-shadow: 0 8px 24px rgba(99,102,241,0.4); transition: var(--transition-base); }
+.ai-chat-fab:hover { transform: scale(1.08); }
+.ai-chat-window { position: fixed; bottom: 6rem; right: 2rem; width: 360px; height: 480px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl); display: flex; flex-direction: column; z-index: 1000; overflow: hidden; box-shadow: var(--shadow-lg); }
+.ai-chat-header { padding: var(--space-md); background: var(--bg-secondary); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.ai-chat-messages { flex: 1; overflow-y: auto; padding: var(--space-md); display: flex; flex-direction: column; gap: var(--space-md); }
+.ai-message { max-width: 80%; padding: var(--space-sm) var(--space-md); border-radius: var(--radius-lg); font-size: var(--font-size-sm); line-height: 1.5; }
+.ai-message.user { background: var(--primary); color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
+.ai-message.assistant { background: var(--bg-secondary); color: var(--text-primary); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid var(--border); }
+.ai-message.thinking { display: flex; gap: 4px; padding: var(--space-md); }
+.ai-thinking-dot { width: 6px; height: 6px; background: var(--text-muted); border-radius: 50%; animation: thinking 1.4s infinite; }
+.ai-thinking-dot:nth-child(2) { animation-delay: 0.2s; }
+.ai-thinking-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes thinking { 0%, 100% { transform: scale(0.6); opacity: 0.4; } 50% { transform: scale(1); opacity: 1; } }
+.ai-chat-input-row { display: flex; gap: var(--space-sm); padding: var(--space-md); border-top: 1px solid var(--border); background: var(--bg-card); }
+.ai-chat-input { flex: 1; padding: var(--space-sm); border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-primary); outline: none; }
+.ai-chat-input:focus { border-color: var(--primary); }
