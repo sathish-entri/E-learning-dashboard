@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Search, Bell, X, CheckCheck } from "lucide-react";
+import { Search, Bell, X, CheckCheck, Menu } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "../../utils/time";
@@ -12,7 +12,7 @@ const NOTIF_ICONS = {
   general: "🔔",
 };
 
-export default function Topbar({ title }) {
+export default function Topbar({ title, onHamburgerClick }) {
   const { user, notifications, unreadCount, markNotifRead, markAllNotifRead } = useAuth();
   const [showNotifs, setShowNotifs] = useState(false);
   const [search, setSearch] = useState("");
@@ -36,7 +36,15 @@ export default function Topbar({ title }) {
 
   return (
     <div className="topbar">
-      <div>
+      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+        <button
+          className="hamburger-btn"
+          onClick={onHamburgerClick}
+          aria-label="Toggle sidebar"
+          id="hamburger-menu-btn"
+        >
+          <Menu size={20} />
+        </button>
         <h1 style={{ fontSize: "var(--font-size-xl)", fontWeight: 700 }}>{title}</h1>
       </div>
 

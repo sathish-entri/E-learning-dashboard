@@ -27,6 +27,8 @@ import LearnerDashboard from "./pages/learner/LearnerDashboard";
 import LearnerClassroomDetailPage from "./pages/learner/LearnerClassroomDetailPage";
 import LearnerCoursesPage from "./pages/learner/LearnerCoursesPage";
 import ActiveLiveSessionsPage from "./pages/learner/ActiveLiveSessionsPage";
+import QuizPage from "./pages/learner/QuizPage";
+import AnalyticsDashboard from "./pages/learner/AnalyticsDashboard";
 
 // Live Room
 import LiveRoom from "./pages/live/LiveRoom";
@@ -89,6 +91,8 @@ export default function App() {
           <Route path="/learner/classroom/:id" element={<LearnerClassroomDetailPage />} />
           <Route path="/learner/courses" element={<LearnerCoursesPage />} />
           <Route path="/learner/live" element={<ActiveLiveSessionsPage />} />
+          <Route path="/learner/quiz/:quizId" element={<QuizPage />} />
+          <Route path="/learner/analytics" element={<AnalyticsDashboard />} />
 
           {/* Profile & Notifications */}
           <Route path="/profile" element={<Profile />} />

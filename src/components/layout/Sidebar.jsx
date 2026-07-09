@@ -3,6 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import {
   LayoutDashboard, BookOpen, Users, GraduationCap, Video,
   LogOut, Bell, ChevronRight, BookMarked, ClipboardList,
+  BarChart2, Trophy, Brain, Megaphone, X,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -23,10 +24,11 @@ const navItems = {
     { to: "/learner/classrooms", label: "My Classes", icon: <BookMarked size={18} /> },
     { to: "/learner/courses", label: "Courses", icon: <BookOpen size={18} /> },
     { to: "/learner/live", label: "Live Sessions", icon: <Video size={18} /> },
+    { to: "/learner/analytics", label: "My Analytics", icon: <BarChart2 size={18} /> },
   ],
 };
 
-export default function Sidebar({ unreadNotifs = 0 }) {
+export default function Sidebar({ unreadNotifs = 0, isOpen, onClose }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -36,72 +38,81 @@ export default function Sidebar({ unreadNotifs = 0 }) {
     navigate("/login");
   };
 
+  const handleNavClick = () => {
+    // Close sidebar on mobile after clicking a nav link
+    if (window.innerWidth <= 768) onClose?.();
+  };
+
   if (!user) return null;
   const links = navItems[user.role] || [];
   const initials = user.name ? user.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0,2) : "U";
 
   return (
-    <aside className="sidebar" id="app-sidebar">
-      {/* Logo */}
-      <div className="sidebar-logo">
-        <div className="sidebar-logo-icon">🎓</div>
-        <span className="sidebar-logo-text">EduLearn</span>
-      </div>
+    <>
+      {/* Mobile Overlay */}
+      <div
+        className={`sidebar-overlay ${isOpen ? "visible" : ""}`}
+        onClick={onClose}
+        aria-hidden="true"
+      />
 
-      {/* Navigation */}
-      <nav className="sidebar-nav">
-        <div className="sidebar-section-label">Main Menu</div>
-        {links.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end={item.end}
-            className={({ isActive }) => `sidebar-link ${isActive ? "active" : ""}`}
+      <aside className={`sidebar ${isOpen ? "open" : ""}`} id="app-sidebar">
+        {/* Logo + close button on mobile */}
+        <div className="sidebar-logo">
+          <div className="sidebar-logo-icon">🎓</div>
+          <span className="sidebar-logo-text">EduLearn</span>
+          <button
+            onClick={onClose}
+            aria-label="Close sidebar"
+            style={{ marginLeft: "auto", background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer", display: "none" }}
+            className="sidebar-close-btn"
           >
-            <span className="link-icon">{item.icon}</span>
-            {item.label}
-            {item.label === "Notifications" && unreadNotifs > 0 && (
-              <span className="link-badge">{unreadNotifs}</span>
-            )}
+            <X size={18} />
+          </button>
+        </div>
+
+        {/* Navigation */}
+        <nav className="sidebar-nav">
+          <div className="sidebar-section-label">Main Menu</div>
+          {links.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.end}
+              className={({ isActive }) => `sidebar-link ${isActive ? "active" : ""}`}
+              onClick={handleNavClick}
+            >
+              <span className="link-icon">{item.icon}</span>
+              {item.label}
+            </NavLink>
+          ))}
+
+          <div className="sidebar-section-label" style={{ marginTop: "var(--space-md)" }}>Account</div>
+          <NavLink to="/notifications" className={({ isActive }) => `sidebar-link ${isActive ? "active" : ""}`} onClick={handleNavClick}>
+            <Bell size={18} className="link-icon" />
+            Notifications
+            {unreadNotifs > 0 && <span className="link-badge">{unreadNotifs}</span>}
           </NavLink>
-        ))}
+          <NavLink to="/profile" className={({ isActive }) => `sidebar-link ${isActive ? "active" : ""}`} onClick={handleNavClick}>
+            <Users size={18} className="link-icon" />
+            Profile
+          </NavLink>
+        </nav>
 
-        <div className="sidebar-section-label" style={{ marginTop: "var(--space-md)" }}>Account</div>
-        <NavLink
-          to="/notifications"
-          className={({ isActive }) => `sidebar-link ${isActive ? "active" : ""}`}
-        >
-          <Bell size={18} className="link-icon" />
-          Notifications
-          {unreadNotifs > 0 && <span className="link-badge">{unreadNotifs}</span>}
-        </NavLink>
-        <NavLink
-          to="/profile"
-          className={({ isActive }) => `sidebar-link ${isActive ? "active" : ""}`}
-        >
-          <Users size={18} className="link-icon" />
-          Profile
-        </NavLink>
-      </nav>
-
-      {/* User section */}
-      <div className="sidebar-user">
-        <div className="sidebar-user-avatar">
-          {user.profilePic ? <img src={user.profilePic} alt={user.name} /> : initials}
+        {/* User section */}
+        <div className="sidebar-user">
+          <div className="sidebar-user-avatar">
+            {user.profilePic ? <img src={user.profilePic} alt={user.name} /> : initials}
+          </div>
+          <div className="sidebar-user-info">
+            <div className="sidebar-user-name">{user.name}</div>
+            <div className="sidebar-user-role">{user.role}</div>
+          </div>
+          <button className="sidebar-logout-btn" onClick={handleLogout} title="Logout" id="sidebar-logout">
+            <LogOut size={16} />
+          </button>
         </div>
-        <div className="sidebar-user-info">
-          <div className="sidebar-user-name">{user.name}</div>
-          <div className="sidebar-user-role">{user.role}</div>
-        </div>
-        <button
-          className="sidebar-logout-btn"
-          onClick={handleLogout}
-          title="Logout"
-          id="sidebar-logout"
-        >
-          <LogOut size={16} />
-        </button>
-      </div>
-    </aside>
+      </aside>
+    </>
   );
 }
