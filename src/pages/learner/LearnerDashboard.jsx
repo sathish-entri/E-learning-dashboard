@@ -3,6 +3,7 @@ import api from "../../api/axios";
 import { BookOpen, Users, ClipboardList, Video, ArrowRight, Activity } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import DashboardThreeWidget from "../../components/learner/DashboardThreeWidget";
 
 export default function LearnerDashboard() {
   const [stats, setStats] = useState({ enrolledClassrooms: 0, totalAssignments: 0, submittedAssignments: 0, avgProgress: 0 });
@@ -42,9 +43,14 @@ export default function LearnerDashboard() {
 
   return (
     <div className="animate-in">
-      <div className="page-header">
-        <h2 className="page-title">Welcome Back Student!</h2>
-        <p className="page-subtitle">Pick up where you left off or join your active lectures</p>
+      <div className="page-header" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", alignItems: "center", marginBottom: "var(--space-xl)", background: "linear-gradient(135deg, rgba(99,102,241,0.06), rgba(6,182,212,0.03))", border: "1px solid var(--border)", borderRadius: "var(--radius-xl)", padding: "var(--space-lg) var(--space-xl)" }}>
+        <div>
+          <h2 className="page-title" style={{ fontSize: "var(--font-size-2xl)", fontWeight: 800 }}>Welcome Back Student!</h2>
+          <p className="page-subtitle" style={{ marginTop: "4px" }}>Pick up where you left off or join your active lectures</p>
+        </div>
+        <div style={{ height: "130px", width: "100%", maxWidth: "340px", marginLeft: "auto", position: "relative", borderRadius: "var(--radius-lg)", overflow: "hidden", background: "var(--bg-glass)", border: "1px solid var(--border)" }}>
+          <DashboardThreeWidget />
+        </div>
       </div>
 
       {/* Active Live Class Notifications banner */}
